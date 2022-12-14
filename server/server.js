@@ -4,7 +4,9 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 require('dotenv').config();
 
+const socketServer = require('./socketServer');
 const authRoutes = require('./routes/authRoutes.js');
+const friendInvitationRoutes = require('./routes/friendInvitationRoutes');
 
 const PORT = process.env.PORT || process.env.API_PORT;
 
@@ -14,8 +16,10 @@ app.use(cors());
 
 // Register routes
 app.use('/api/auth', authRoutes);
+app.use('/api/friend-invitation', friendInvitationRoutes);
 
 const server = http.createServer(app);
+socketServer.registerSocketServer(server);
 
 mongoose.set('strictQuery', true);
 mongoose
@@ -29,3 +33,5 @@ mongoose
     console.log('database connection failed');
     console.log(error);
   });
+
+//! 28 - 38

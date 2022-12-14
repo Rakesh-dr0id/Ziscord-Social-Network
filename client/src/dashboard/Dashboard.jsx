@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { styled } from '@mui/system';
 
 import SideBar from './SideBar/SideBar';
@@ -8,6 +8,7 @@ import AppBar from './AppBar/AppBar';
 import { logout } from './../shared/utils/auth';
 import { connect } from 'react-redux';
 import { getActions } from '../store/actions/authActions';
+import { connectWithSocketServer } from '../realtimeComms/SocketConnection';
 
 const Wrapper = styled('div')({
   width: '100%',
@@ -23,6 +24,7 @@ const Dashboard = ({ setUserDetails }) => {
       logout();
     } else {
       setUserDetails(JSON.parse(userDetails));
+      connectWithSocketServer(JSON.parse(userDetails));
     }
   }, []);
 
