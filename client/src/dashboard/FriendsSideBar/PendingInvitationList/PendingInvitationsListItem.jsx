@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Box, Tooltip, Typography } from '@mui/material';
 import Avatar from '../../../shared/components/Avatar';
 import InvitationDecisionButtons from './InvitationDecisionButtons';
+import { connect } from 'react-redux';
+import { getActions } from '../../../store/actions/friendsAction';
 
 const PendingInvitationsListItem = ({
   id,
@@ -50,7 +52,7 @@ const PendingInvitationsListItem = ({
           <InvitationDecisionButtons
             disabled={buttonsDisabled}
             acceptInvitationHandler={handleAcceptInvitation}
-            rejectInvitationHandler={rejectFriendInvitation}
+            rejectInvitationHandler={handleRejectInvitation}
           />
         </Box>
       </div>
@@ -58,4 +60,10 @@ const PendingInvitationsListItem = ({
   );
 };
 
-export default PendingInvitationsListItem;
+const mapActionsToProps = (dispatch) => {
+  return {
+    ...getActions(dispatch),
+  };
+};
+
+export default connect(null, mapActionsToProps)(PendingInvitationsListItem);
