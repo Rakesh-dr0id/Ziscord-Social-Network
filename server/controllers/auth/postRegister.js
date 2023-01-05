@@ -1,22 +1,25 @@
-const User = require('../../models/user');
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const User = require("../../models/user");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const postRegister = async (req, res) => {
   try {
     const { username, mail, password } = req.body;
 
+    console.log("user register request came");
     // check if user exists
     const userExists = await User.exists({ mail: mail.toLowerCase() });
 
+    console.log(userExists);
+
     if (userExists) {
-      return res.status(409).send('E-mail already in use');
+      return res.status(409).send("E-mail already in use.");
     }
 
-    //encrypt password
+    // encrypt password
     const encryptedPassword = await bcrypt.hash(password, 10);
 
-    // create user document & save in database
+    // create user document and save in database
     const user = await User.create({
       username,
       mail: mail.toLowerCase(),
@@ -31,7 +34,7 @@ const postRegister = async (req, res) => {
       },
       process.env.TOKEN_KEY,
       {
-        expiresIn: '24h',
+        expiresIn: "24h",
       }
     );
 
@@ -43,8 +46,8 @@ const postRegister = async (req, res) => {
         _id: user._id,
       },
     });
-  } catch (error) {
-    return res.status(500).send('Error ocurred. Please try again');
+  } catch (err) {
+    return res.status(500).send("Error occured. Please try again");
   }
 };
 

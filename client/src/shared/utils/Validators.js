@@ -14,12 +14,11 @@ export const validateRegisterForm = ({ mail, password, username }) => {
 };
 
 const validatePassword = (password) => {
-  return password.length > 5 && password.length <= 12;
+  return password.length > 5 && password.length < 13;
 };
 
 export const validateMail = (mail) => {
   const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-
   return emailPattern.test(mail);
 };
 

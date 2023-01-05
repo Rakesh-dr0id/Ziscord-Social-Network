@@ -1,5 +1,5 @@
-const Conversation = require('../models/conversation');
-const chatUpdate = require('./updates/chat');
+const Conversation = require("../models/conversation");
+const chatUpdates = require("./updates/chat");
 
 const directChatHistoryHandler = async (socket, data) => {
   try {
@@ -8,14 +8,14 @@ const directChatHistoryHandler = async (socket, data) => {
 
     const conversation = await Conversation.findOne({
       participants: { $all: [userId, receiverUserId] },
-      type: 'DIRECT',
+      type: "DIRECT",
     });
 
     if (conversation) {
-      chatUpdate.updateChatHistory(conversation._id.toString(), socket.id);
+      chatUpdates.updateChatHistory(conversation._id.toString(), socket.id);
     }
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 

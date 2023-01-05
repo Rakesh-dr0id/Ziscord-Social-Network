@@ -1,4 +1,4 @@
-import { chatActions } from '../actions/chatActions';
+import { chatActions } from "../actions/chatActions";
 
 const initState = {
   chosenChatDetails: null,

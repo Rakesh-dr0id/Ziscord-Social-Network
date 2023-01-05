@@ -1,11 +1,12 @@
-const Conversation = require('../models/conversation');
-const Message = require('../models/message');
-const chatUpdates = require('./updates/chat');
+const Message = require("../models/message");
+const Conversation = require("../models/conversation");
+const chatUpdates = require("./updates/chat");
 
 const directMessageHandler = async (socket, data) => {
   try {
-    const { userId } = socket.user;
+    console.log("direct message event is being handled");
 
+    const { userId } = socket.user;
     const { receiverUserId, content } = data;
 
     // create new message
@@ -13,10 +14,10 @@ const directMessageHandler = async (socket, data) => {
       content: content,
       author: userId,
       date: new Date(),
-      type: 'DIRECT',
+      type: "DIRECT",
     });
 
-    // find if conversation exist with this 2 users - if not create new
+    // find if conversation exist with this two users - if not create new
     const conversation = await Conversation.findOne({
       participants: { $all: [userId, receiverUserId] },
     });
@@ -25,7 +26,7 @@ const directMessageHandler = async (socket, data) => {
       conversation.messages.push(message._id);
       await conversation.save();
 
-      //perform & update to sender & receive if is online
+      // perform and update to sender and receiver if is online
       chatUpdates.updateChatHistory(conversation._id.toString());
     } else {
       // create new conversation if not exists
@@ -34,11 +35,11 @@ const directMessageHandler = async (socket, data) => {
         participants: [userId, receiverUserId],
       });
 
-      //   perform & update to sender and receiver if is online
+      // perform and update to sender and receiver if is online
       chatUpdates.updateChatHistory(newConversation._id.toString());
     }
-  } catch (error) {
-    console.log(error);
+  } catch (err) {
+    console.log(err);
   }
 };
 

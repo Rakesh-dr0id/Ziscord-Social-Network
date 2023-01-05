@@ -1,5 +1,5 @@
-import store from '../../store/store';
-import { setMessages } from '../../store/actions/chatActions';
+import store from "../../store/store";
+import { setMessages } from "../../store/actions/chatActions";
 
 export const updateDirectChatHistoryIfActive = (data) => {
   const { participants, messages } = data;
@@ -9,11 +9,11 @@ export const updateDirectChatHistoryIfActive = (data) => {
   const userId = store.getState().auth.userDetails._id;
 
   if (receiverId && userId) {
-    const usersInConversation = [receiverId, userId];
+    const usersInCoversation = [receiverId, userId];
 
     updateChatHistoryIfSameConversationActive({
       participants,
-      usersInConversation,
+      usersInCoversation,
       messages,
     });
   }
@@ -21,11 +21,11 @@ export const updateDirectChatHistoryIfActive = (data) => {
 
 const updateChatHistoryIfSameConversationActive = ({
   participants,
-  usersInConversation,
+  usersInCoversation,
   messages,
 }) => {
   const result = participants.every(function (participantId) {
-    return usersInConversation.includes(participantId);
+    return usersInCoversation.includes(participantId);
   });
 
   if (result) {
